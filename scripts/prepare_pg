@@ -5,15 +5,6 @@ if [ ! -z $GITHUB_WORKFLOW ]; then
   export PGPASSWORD='postgres'
 fi
 
-
-cat << SQL | psql -U postgres
-CREATE ROLE postqueue PASSWORD 'postqueue' LOGIN;
-SQL
-
-cat << SQL | psql -U postgres
-CREATE DATABASE postqueue_test WITH OWNER postqueue;
-SQL
-
-cat << SQL | psql -U postgres
-CREATE DATABASE postqueue WITH OWNER postqueue
-SQL
+psql -h localhost -p 5432 -U postgres -c "CREATE ROLE postqueue PASSWORD 'postqueue' LOGIN;"
+psql -h localhost -p 5432 -U postgres -c "CREATE DATABASE postqueue_test WITH OWNER postqueue;"
+psql -h localhost -p 5432 -U postgres -c "CREATE DATABASE postqueue WITH OWNER postqueue;"
