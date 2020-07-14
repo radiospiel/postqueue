@@ -1,5 +1,11 @@
 #!/bin/sh
 
+if [ ! -z $GITHUB_WORKFLOW ]
+  echo 'Setting a PGPASSWORD when running in GH action with DB PW'
+  export PGPASSWORD='postgres'
+fi
+
+
 cat << SQL | psql -U postgres
 CREATE ROLE postqueue PASSWORD 'postqueue' LOGIN;
 SQL
