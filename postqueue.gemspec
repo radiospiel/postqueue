@@ -16,17 +16,18 @@ Gem::Specification.new do |gem|
   gem.bindir = 'bin'
   gem.executables = ["postqueue"]
 
+  # Gem dependencies
+  gem.add_dependency "pg", ">= 0.20"
+  gem.add_dependency "simple-sql", "~> 0.5.23"
+  gem.add_dependency "table_print"
+
+  # Development depdendencies
   gem.add_development_dependency "pry", "~> 0.10"
   gem.add_development_dependency "pry-byebug"
   gem.add_development_dependency "rake", "~> 10.5.0"
-  gem.add_development_dependency "rspec", "~> 3.5.0"
+  gem.add_development_dependency "rspec", "~> 3.6"
   gem.add_development_dependency "simplecov"
-
   gem.add_development_dependency "activerecord", "> 4"
   gem.add_development_dependency "rubocop", "0.52.1"
   gem.add_development_dependency "timecop", "~> 0.8"
-  gem.add_dependency "pg", "~> 0", ">= 0.20"
-  gem.add_dependency "simple-sql", "~> 0.5.23"
-  gem.add_dependency "table_print"
-  gem.add_development_dependency "fury"
 end
