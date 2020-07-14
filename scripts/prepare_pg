@@ -1,13 +1,10 @@
 #!/bin/sh
 
-cat << SQL | psql -U postgres
-CREATE ROLE postqueue PASSWORD 'postqueue' LOGIN;
-SQL
+if [ ! -z "$GITHUB_WORKFLOW" ]; then
+  echo 'Setting a PGPASSWORD when running in GH action with DB PW'
+  export PGPASSWORD='postgres'
+fi
 
-cat << SQL | psql -U postgres
-CREATE DATABASE postqueue_test WITH OWNER postqueue;
-SQL
-
-cat << SQL | psql -U postgres
-CREATE DATABASE postqueue WITH OWNER postqueue
-SQL
+psql -h localhost -p 5432 -U postgres -w -c "CREATE ROLE postqueue PASSWORD 'postqueue' LOGIN;"
+psql -h localhost -p 5432 -U postgres -w -c "CREATE DATABASE postqueue_test WITH OWNER postqueue;"
+psql -h localhost -p 5432 -U postgres -w -c "CREATE DATABASE postqueue WITH OWNER postqueue;"

@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/mediapeers/postqueue.svg?branch=master)](https://travis-ci.org/mediapeers/postqueue)
+[![Ruby Build](https://github.com/mediafellows/postqueue/workflows/Ruby%20Build/badge.svg)](https://github.com/mediafellows/postqueue/actions?query=workflow%3A%22Ruby+Build%22)
 
 # Postqueue
 

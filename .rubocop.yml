@@ -68,9 +68,3 @@ Metrics/CyclomaticComplexity:
 # TODO: enable later
 Style/StringLiterals:
   Enabled: false
-
-# TODO: Remove once code is fixed
-Style/RescueStandardError:
-  Exclude:
-#    - spec/postqueue/concurrency_spec.rb
-#    - lib/postqueue/queue/processing.rb
