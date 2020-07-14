@@ -1,8 +1,6 @@
 #!/bin/sh
 
-echo $GITHUB_WORKFLOW
-
-if [ ! -z $GITHUB_WORKFLOW ]; then
+if [ ! -z "$GITHUB_WORKFLOW" ]; then
   echo 'Setting a PGPASSWORD when running in GH action with DB PW'
   export PGPASSWORD='postgres'
 fi
