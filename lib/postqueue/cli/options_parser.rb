@@ -18,7 +18,7 @@ module Postqueue
         options = OpenStruct.new
         options.sub_command = argv.shift || "stats"
 
-        unless %w(stats peek enqueue run process).include?(options.sub_command)
+        unless %w(stats peek enqueue run process migrate).include?(options.sub_command)
           usage!
         end
 
@@ -37,17 +37,18 @@ module Postqueue
       end
 
       def usage
-        STDERR.puts <<-USAGE
-This is postqueue #{Postqueue::VERSION}. Usage examples:
+        STDERR.puts <<~USAGE
+          This is postqueue #{Postqueue::VERSION}. Usage examples:
 
-  postqueue [ stats ]
-  postqueue peek
-  postqueue enqueue op entity_id,entity_id,entity_id
-  postqueue run
-  postqueue help
-  postqueue process
+            postqueue [ stats ]
+            postqueue peek
+            postqueue enqueue op entity_id,entity_id,entity_id
+            postqueue run
+            postqueue help
+            postqueue process
+            postqueue migrate
 
-USAGE
+        USAGE
       end
 
       def usage!

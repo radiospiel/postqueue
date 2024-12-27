@@ -1,4 +1,17 @@
-sudo: false
+sudo: required
+dist: trusty
+language: ruby
+cache:
+  bundler: true
+addons:
+  postgresql: 9.5
+
+before_script:
+  - psql --version
+  - bundle install
+  - scripts/prepare_pg
+  - ls -a
+
 script:
-  - bin/rspec
-  - bin/rubocop
+  - bundle exec rspec
+  - bundle exec rubocop

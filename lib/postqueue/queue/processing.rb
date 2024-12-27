@@ -20,6 +20,7 @@ module Postqueue
       loop do
         processed_items = process(op: op, batch_size: batch_size)
         break if processed_items == 0
+
         count += processed_items
       end
       count
@@ -28,6 +29,7 @@ module Postqueue
     private
 
     # The actual processing. Returns [ op, [ ids-of-processed-items ] ] or nil
+    # rubocop:disable Style/RescueStandardError
     def process_inside_transaction(op:, batch_size:)
       items = select_and_lock_batch(op: op, max_batch_size: batch_size)
       match = items.first
@@ -36,7 +38,7 @@ module Postqueue
       entity_ids = items.map(&:entity_id)
       timing = run_callback(op: match.op, entity_ids: entity_ids)
 
-      on_processing(match.op, entity_ids, timing)
+      after_processing.call(match.op, entity_ids, timing)
       item_class.where(id: items.map(&:id)).delete_all
 
       # even though we try not to enqueue duplicates we cannot guarantee that,
@@ -54,5 +56,6 @@ module Postqueue
       on_exception.call(e, match.op, entity_ids)
       0
     end
+    # rubocop:enable Style/RescueStandardError
   end
 end

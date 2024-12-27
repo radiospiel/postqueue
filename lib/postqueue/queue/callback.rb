@@ -14,8 +14,6 @@ module Postqueue
   end
 
   class Queue
-    Timing = Struct.new(:avg_queue_time, :max_queue_time, :total_processing_time, :processing_time)
-
     def assert_valid_op!(op)
       return if op == :missing_handler
       return if op.is_a?(String)
@@ -29,11 +27,13 @@ module Postqueue
 
       if batch_size
         raise ArgumentError, "Can't set per-op batchsize for op '*'" if op == "*"
+
         @batch_sizes[op] = batch_size
       end
 
       unless idempotent.nil?
         raise ArgumentError, "Can't idempotent for default op '*'" if op == "*"
+
         @idempotent_operations[op] = idempotent
       end
 
@@ -58,12 +58,12 @@ module Postqueue
       SQL
       queue_time = queue_times.first
 
-      total_processing_time = Benchmark.realtime do
+      processing_time = Benchmark.realtime do
         callback = callback_for(op: op) || callbacks.fetch(:missing_handler)
         callback.call(op, entity_ids)
       end
 
-      Timing.new(queue_time.avg, queue_time.max, total_processing_time, total_processing_time / entity_ids.length)
+      Timing.new(queue_time.avg, queue_time.max, processing_time)
     end
   end
 end

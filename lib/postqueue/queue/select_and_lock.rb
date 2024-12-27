@@ -43,7 +43,7 @@ module Postqueue
       return [] unless match
 
       batch_size = calculate_batch_size(op: match.op, max_batch_size: max_batch_size)
-      return [ match ] if batch_size <= 1
+      return [match] if batch_size <= 1
 
       batch_relation = relation.where(op: match.op)
       select_and_lock(batch_relation, limit: batch_size)
@@ -61,6 +61,7 @@ module Postqueue
       recommended_batch_size = batch_size(op: op)
       return 1 if recommended_batch_size < 2
       return recommended_batch_size unless max_batch_size
+
       max_batch_size < recommended_batch_size ? max_batch_size : recommended_batch_size
     end
   end

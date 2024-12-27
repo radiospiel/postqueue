@@ -6,12 +6,21 @@ require "simplecov"
 
 SimpleCov.start do
   minimum_coverage 94
+  add_filter 'vendor/'
+  add_filter 'lib/postqueue/queue/runner.rb'
+  add_filter 'lib/postqueue/notifications.rb'
+  add_filter 'lib/postqueue/logger.rb'
+  add_filter 'lib/postqueue/version.rb'
+  add_filter 'lib/postqueue/migrations.rb'
 end
 
 require "postqueue"
 require "./spec/support/configure_active_record"
 
-Postqueue.logger = Logger.new(File.open("log/test.log", "a"))
+logger = Logger.new(File.open("log/test.log", "a"))
+logger.level = Logger::INFO
+
+Simple::SQL.logger = Postqueue.logger = logger
 
 RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
